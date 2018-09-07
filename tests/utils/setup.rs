@@ -105,9 +105,9 @@ impl<'a> Setup<'a>
 
 impl<'a> Drop for Setup<'a> {
     fn drop(&mut self) {
-        self.pool_handle.map(|handle| {
+        if let Some(handle) = self.pool_handle {
             indy::pool::Pool::close(handle).unwrap()
-        });
+        }
         indy::pool::Pool::delete(self.pool_name.as_str()).unwrap();
     }
 }
